@@ -8,3 +8,12 @@ services:
         ports:
             - 4306:3306
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    data_collection:
+        image: data_collection
+        env_file: data_collection/.env # 開発用
+        build:
+            context: data_collection/
+        volumes: ## 開発をするときは、コメントアウトを外すと実装がしやすくなる
+            - ./data_collection/src:/home/sdk/src
+            - ./data_collection/query:/home/sdk/query
+            - ./data_collection/data:/home/sdk/data
