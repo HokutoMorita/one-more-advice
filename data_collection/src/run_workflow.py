@@ -6,6 +6,7 @@ import luigi
 from work_flow_logging import work_flow_logging
 
 from extract.api import extract_qiita
+from extract.scraping import extract_teratail
 from transform import transform_qiita
 from load import load_qiita
 
@@ -97,6 +98,36 @@ class LoadQiitaItem(luigi.Task):
             LOGGER.traceback(traceback.format_exc())
 
         LOGGER.task_done('Load Qiita Item')
+
+class ExtractTeratailItem(luigi.Task):
+    """
+    teratailの投稿データを取得する
+    """
+    def requires(self):
+        return None
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Extract teratail Item')
+        try:
+            # Extract
+            LOGGER.subtask_start('Extract teratail Item')
+            teratail_item_df = extract_teratail.extract_teratail_item()
+            teratail_item_df.to_csv('../data/extracted/extracted_teratail_item.csv', index=False, quoting=1, line_terminator='\r\n')
+            LOGGER.subtask_done('Extract teratail Item')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Extract teratail Item')
+
 
 def main():
     LOGGER.workflow_start()
