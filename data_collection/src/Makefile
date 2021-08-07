@@ -21,8 +21,20 @@ LoadQiitaItem:
 	rm -f ../logs/log.txt
 	python run_workflow.py $@ $(luigi_mode)
 
+TransformQiitaUser:
+	rm -f ../finished_file_token/$@
+	rm -f ../logs/log.txt
+	python run_workflow.py $@ $(luigi_mode)
+
+LoadQiitaUser:
+	rm -f ../finished_file_token/$@
+	rm -f ../logs/log.txt
+	python run_workflow.py $@ $(luigi_mode)
+
 ETLQiita:
 	make clean
 	make ExtractQiitaItem
 	make TransformQiitaItem
+	make TransformQiitaUser
 	make LoadQiitaItem
+	make LoadQiitaUser
