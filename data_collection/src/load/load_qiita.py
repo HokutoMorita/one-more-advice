@@ -84,3 +84,75 @@ def load_qiita_user():
         mysql_connector.cur.close()
         mysql_connector.con.close()
     logger.info('mysql execute query done')
+
+def load_qiita_tag():
+    """
+    QiitaのタグデータをDBに投入する
+    """
+    logger.info('mysql connect start')
+    try:
+        mysql_connector = MySqlConnector(
+            hostname=os.getenv('MYSQL_HOST'),
+            user=os.getenv('MYSQL_USER'),
+            password=os.getenv('MYSQL_PASSWORD'),
+            database=os.getenv('MYSQL_DATABASE'),
+            port=os.getenv('MYSQL_PORT'),
+        )
+    except:
+        logger.error('mysql connect failed')
+        logger.error(traceback.format_exc())
+    logger.info('mysql connect done')
+    qiita_tag_df = pd.read_csv('../data/transformed/transformed_qiita_tag.csv')
+    table_name = 'qiita_tag_master'
+    table_columns = [
+        'tag_name'
+    ]
+
+    logger.info('mysql execute query start')
+    try:
+        mysql_connector.update_insert_data_by_df(qiita_tag_df, table_name, table_columns)
+        mysql_connector.con.commit()
+    except:
+        logger.error('mysql execute query failed')
+        logger.error(traceback.format_exc())
+    finally:
+        mysql_connector.cur.close()
+        mysql_connector.con.close()
+    logger.info('mysql execute query done')
+
+def load_qiita_item_to_tag():
+    """
+    Qiitaの投稿データとタグデータの関連データをDBに投入する
+    """
+    logger.info('mysql connect start')
+    try:
+        mysql_connector = MySqlConnector(
+            hostname=os.getenv('MYSQL_HOST'),
+            user=os.getenv('MYSQL_USER'),
+            password=os.getenv('MYSQL_PASSWORD'),
+            database=os.getenv('MYSQL_DATABASE'),
+            port=os.getenv('MYSQL_PORT'),
+        )
+    except:
+        logger.error('mysql connect failed')
+        logger.error(traceback.format_exc())
+    logger.info('mysql connect done')
+    qiita_item_to_tag_df = pd.read_csv('../data/transformed/transformed_qiita_item_to_tag.csv')
+    table_name = 'qiita_item_to_tag_relation'
+    table_columns = [
+        'item_id', 'tag_name'
+    ]
+
+    logger.info('mysql execute query start')
+    try:
+        mysql_connector.update_insert_data_by_df(qiita_item_to_tag_df, table_name, table_columns)
+        mysql_connector.con.commit()
+    except:
+        logger.error('mysql execute query failed')
+        logger.error(traceback.format_exc())
+    finally:
+        mysql_connector.cur.close()
+        mysql_connector.con.close()
+    logger.info('mysql execute query done')
+
+

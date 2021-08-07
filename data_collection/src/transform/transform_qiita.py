@@ -83,3 +83,58 @@ def create_qiita_user_df(qiita_item_df):
         qiita_user_dict = ast.literal_eval(qiita_user_str)
         qiita_user_dict_list.append(qiita_user_dict)
     return pd.DataFrame.from_records(qiita_user_dict_list)
+
+def transform_qiita_tag():
+    """
+    Qiitaのタグデータを整形する
+    """
+    qiita_item_df = pd.read_csv('../data/extracted/extracted_qiita_item.csv')
+
+    qiita_tag_df = create_qiita_tag_df(qiita_item_df)
+
+    return qiita_tag_df
+
+def create_qiita_tag_df(qiita_item_df):
+    """
+    qiita_item_dfからqiita_tag_dfを生成する
+    """
+    qiita_tag_list = []
+    for index, row in qiita_item_df.iterrows():
+        qiita_item_series = qiita_item_df.iloc[index]
+        qiita_item_tags_str = qiita_item_series['tags']
+        qiita_item_tags = ast.literal_eval(qiita_item_tags_str)
+        
+        for qiita_item_tag in qiita_item_tags:
+            qiita_tag_list.append(qiita_item_tag['name'])
+    # タグデータはマスターとして扱うため重複を削除したいので、set型に変換する
+    qiita_tag_set = set(qiita_tag_list)
+    return pd.DataFrame(qiita_tag_set, columns =['tag_name'])
+
+
+def transform_qiita_item_to_tag():
+    """
+    Qiitaの投稿データとタグデータの関連データを整形する
+    """
+    qiita_item_df = pd.read_csv('../data/extracted/extracted_qiita_item.csv')
+
+    qiita_item_to_tag_relation_df = create_qiita_item_to_tag_relation_df(qiita_item_df)
+
+    return qiita_item_to_tag_relation_df
+
+def create_qiita_item_to_tag_relation_df(qiita_item_df):
+    """
+    qiita_item_dfからqiita_item_to_tag_relation_dfを生成する
+    """
+    qiita_item_to_tag_relation_list = []
+    for index, row in qiita_item_df.iterrows():
+        qiita_item_series = qiita_item_df.iloc[index]
+        qiita_item_id = qiita_item_series['id']
+        qiita_item_tags_str = qiita_item_series['tags']
+        qiita_item_tags = ast.literal_eval(qiita_item_tags_str)
+        
+        for qiita_item_tag_dict in qiita_item_tags:
+            qiita_item_to_tag_relation_dict = {}
+            qiita_item_to_tag_relation_dict['item_id'] = qiita_item_id
+            qiita_item_to_tag_relation_dict['tag_name'] = qiita_item_tag_dict['name']
+            qiita_item_to_tag_relation_list.append(qiita_item_to_tag_relation_dict)
+    return pd.DataFrame.from_records(qiita_item_to_tag_relation_list)
