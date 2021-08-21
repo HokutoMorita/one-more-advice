@@ -212,6 +212,7 @@ class LoadQiitaTag(luigi.Task):
             LOGGER.traceback(traceback.format_exc())
 
         LOGGER.task_done('Load Qiita Tag')
+
 class TransformQiitaItemToTag(luigi.Task):
     """
     Qiitaの投稿データとタグデータの関連データを整形する

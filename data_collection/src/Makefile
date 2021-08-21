@@ -63,11 +63,11 @@ ETLQiita:
 	make TransformQiitaUser
 	make TransformQiitaTag
 	make TransformQiitaItemToTag
-	make LoadQiitaItem
-	make LoadQiitaUser
-	make LoadQiitaTag
-	make LoadQiitaItemToTag
+# 	make LoadQiitaItem
+# 	make LoadQiitaUser
+# 	make LoadQiitaTag
+# 	make LoadQiitaItemToTag
 
 ETLTeratail:
-	make clean
+# 	make clean
 	make ExtractTeratailItem
