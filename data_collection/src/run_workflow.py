@@ -99,6 +99,176 @@ class LoadQiitaItem(luigi.Task):
 
         LOGGER.task_done('Load Qiita Item')
 
+class TransformQiitaUser(luigi.Task):
+    """
+    Qiitaのユーザーデータを整形する
+    """
+    def requires(self):
+        return [TransformQiitaItem()]
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Transform Qiita User')
+        try:
+            # Transform
+            LOGGER.subtask_start('Transform Qiita User')
+            qiita_item_df = transform_qiita.transform_qiita_user()
+            qiita_item_df.to_csv('../data/transformed/transformed_qiita_user.csv', index=False, quoting=1, line_terminator='\r\n')
+            LOGGER.subtask_done('Transform Qiita User')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Transform Qiita User')
+
+class LoadQiitaUser(luigi.Task):
+    """
+    QiitaのユーザーデータをDBに投入する
+    """
+    def requires(self):
+        return [TransformQiitaUser()]
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Load Qiita User')
+        try:
+            # Load
+            LOGGER.subtask_start('Load Qiita User')
+            load_qiita.load_qiita_user()
+            LOGGER.subtask_done('Load Qiita User')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Load Qiita User')
+
+class TransformQiitaTag(luigi.Task):
+    """
+    Qiitaのタグデータを整形する
+    """
+    def requires(self):
+        return [TransformQiitaItem()]
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Transform Qiita Tag')
+        try:
+            # Transform
+            LOGGER.subtask_start('Transform Qiita Tag')
+            qiita_item_df = transform_qiita.transform_qiita_tag()
+            qiita_item_df.to_csv('../data/transformed/transformed_qiita_tag.csv', index=False, quoting=1, line_terminator='\r\n')
+            LOGGER.subtask_done('Transform Qiita Tag')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Transform Qiita Tag')
+
+class LoadQiitaTag(luigi.Task):
+    """
+    QiitaのタグデータをDBに投入する
+    """
+    def requires(self):
+        return [TransformQiitaTag()]
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Load Qiita Tag')
+        try:
+            # Load
+            LOGGER.subtask_start('Load Qiita Tag')
+            load_qiita.load_qiita_tag()
+            LOGGER.subtask_done('Load Qiita Tag')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Load Qiita Tag')
+class TransformQiitaItemToTag(luigi.Task):
+    """
+    Qiitaの投稿データとタグデータの関連データを整形する
+    """
+    def requires(self):
+        return [TransformQiitaItem()]
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Transform Qiita ItemToTag')
+        try:
+            # Transform
+            LOGGER.subtask_start('Transform Qiita ItemToTag')
+            qiita_item_df = transform_qiita.transform_qiita_item_to_tag()
+            qiita_item_df.to_csv('../data/transformed/transformed_qiita_item_to_tag.csv', index=False, quoting=1, line_terminator='\r\n')
+            LOGGER.subtask_done('Transform Qiita ItemToTag')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Transform Qiita ItemToTag')
+
+class LoadQiitaItemToTag(luigi.Task):
+    """
+    Qiitaの投稿データとタグデータの関連データをDBに投入する
+    """
+    def requires(self):
+        return [TransformQiitaItemToTag(), LoadQiitaTag()]
+
+    def output(self):
+        return luigi.LocalTarget(self.getOutputFilePath())
+
+    def getOutputFilePath(self):
+        return "../finished_file_token/{:s}".format(self.__class__.__name__)
+
+    def run(self):
+        LOGGER.task_start('Load Qiita ItemToTag')
+        try:
+            # Load
+            LOGGER.subtask_start('Load Qiita ItemToTag')
+            load_qiita.load_qiita_item_to_tag()
+            LOGGER.subtask_done('Load Qiita ItemToTag')
+
+            with open(self.getOutputFilePath(), 'w') as fout:
+                fout.write('\n')
+        except:
+            LOGGER.traceback(traceback.format_exc())
+
+        LOGGER.task_done('Load Qiita ItemToTag')
+
 class ExtractTeratailItem(luigi.Task):
     """
     teratailの投稿データを取得する
@@ -127,7 +297,6 @@ class ExtractTeratailItem(luigi.Task):
             LOGGER.traceback(traceback.format_exc())
 
         LOGGER.task_done('Extract teratail Item')
-
 
 def main():
     LOGGER.workflow_start()

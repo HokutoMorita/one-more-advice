@@ -14,7 +14,8 @@ def extract_qiita_item():
     QiitaのAPIを呼び出して投稿データを取得する
     """
     qiita_item_df = get_qiita_item()
-    return qiita_item_df.drop(['tags', 'user'], axis=1)
+    # return qiita_item_df.drop(['tags', 'user'], axis=1)
+    return qiita_item_df
 
 def get_qiita_item():
     """
