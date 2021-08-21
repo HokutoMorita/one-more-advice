@@ -11,6 +11,11 @@ ExtractQiitaItem:
 	rm -f ../logs/log.txt
 	python run_workflow.py $@ $(luigi_mode)
 
+ExtractTeratailItem:
+	rm -f ../finished_file_token/$@
+	rm -f ../logs/log.txt
+	python run_workflow.py $@ $(luigi_mode)
+
 TransformQiitaItem:
 	rm -f ../finished_file_token/$@
 	rm -f ../logs/log.txt
@@ -62,3 +67,7 @@ ETLQiita:
 	make LoadQiitaUser
 	make LoadQiitaTag
 	make LoadQiitaItemToTag
+
+ETLTeratail:
+	make clean
+	make ExtractTeratailItem
