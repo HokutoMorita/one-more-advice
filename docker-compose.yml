@@ -8,6 +8,9 @@ services:
         ports:
             - 4306:3306
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        networks:
+            one_more_advice_network:
+                ipv4_address: 172.30.0.4
     data_collection:
         image: data_collection
         env_file: data_collection/.env # 開発用
@@ -17,3 +20,15 @@ services:
             - ./data_collection/src:/home/sdk/src
             - ./data_collection/query:/home/sdk/query
             - ./data_collection/data:/home/sdk/data
+        networks:
+            one_more_advice_network:
+                ipv4_address: 172.30.0.5
+
+networks:
+    one_more_advice_network:
+        name: one_more_advice_network_db
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.30.0.0/24
