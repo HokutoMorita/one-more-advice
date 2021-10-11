@@ -20,18 +20,20 @@ $ docker-compose up one_more_advice_db
 DB/DDL/20210725_DDL_one_more_advice.sql
 ```
 
-### Docker環境内からローカルDBに接続する方法
-下記のコマンドを実行してMySQLのホスト情報を取得する
+### Sequel proなどでDBに接続するときの情報
 ```sh
-$ docker inspect one-more-advice_one_more_advice_db_1
-
-# 下記コマンドでDocker内から接続するホスト情報の取得することができる
-## このコマンドを実行して取得したjson内の"NetworkSettings"=> "Networks"=>"Gateway"のアドレスがMySQLへの接続に必要なホストとなる。
-## jqコマンドでハイフンを含むキー名(one-more-advice_defaultなど)がある場合は、最初の階層に含めないとエラーになってしまう
-### https://qiita.com/keigo1450/items/84e696f8be0761ed0e04
-### https://stedolan.github.io/jq/manual/#Builtinoperatorsandfunctions
-$ docker inspect one-more-advice_one_more_advice_db_1 | jq '.[0].NetworkSettings.Networks' | jq '.["one-more-advice_default"].Gateway'
+  - ホスト
+    - 127.0.0.1
+  - ユーザ名
+    - root
+  - パスワード
+    - one_more_advice
+  - データベース
+    - one_more_advice
+  - ポート
+    - 4306
 ```
+
 ## データ収集基盤の環境構築
 ### 1. .envファイルの作成
 ```

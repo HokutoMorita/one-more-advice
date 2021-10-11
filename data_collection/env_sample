@@ -2,7 +2,7 @@
 QIITA_API_KEY=XXX
 
 # DBへの接続情報
-MYSQL_ROOT_PASSWORD=one_more_advice
+MYSQL_PASSWORD=one_more_advice
 MYSQL_DATABASE=one_more_advice
 MYSQL_HOST=one_more_advice_db
 MYSQL_USER=root
