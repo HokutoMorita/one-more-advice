@@ -17,7 +17,7 @@ $ docker-compose up one_more_advice_db
 ### 2. DDLを流し込んでテーブルを作成する
 下記のファイルをDB内にインポートする
 ```
-DB/DDL/20210711_DDL_one_more_advice.sql
+DB/DDL/20210725_DDL_one_more_advice.sql
 ```
 
 ### Docker環境内からローカルDBに接続する方法
