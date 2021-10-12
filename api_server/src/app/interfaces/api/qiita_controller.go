@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	"one_more_advice_api/src/domain"
-	"one_more_advice_api/src/interfaces/database"
-	"one_more_advice_api/src/usecase"
+	"one_more_advice_api/src/app/domain"
+	"one_more_advice_api/src/app/interfaces/database"
+	"one_more_advice_api/src/app/usecase"
 
 	"github.com/labstack/echo"
 )
