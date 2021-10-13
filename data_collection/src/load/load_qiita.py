@@ -103,6 +103,7 @@ def load_qiita_tag():
         logger.error(traceback.format_exc())
     logger.info('mysql connect done')
     qiita_tag_df = pd.read_csv('../data/transformed/transformed_qiita_tag.csv')
+    qiita_tag_df = qiita_tag_df.dropna(subset=['tag_name'])
     table_name = 'qiita_tag_master'
     table_columns = [
         'tag_name'
