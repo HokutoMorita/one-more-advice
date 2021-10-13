@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"os"
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"one_more_advice_api/src/app/interfaces/database"
@@ -17,11 +18,13 @@ func NewSqlHandler() database.SqlHandler {
 	mysqlHost := os.Getenv("MYSQL_HOST")
 	mysqlUser := os.Getenv("MYSQL_USER")
 	mysqlPort := os.Getenv("MYSQL_PORT")
-	// dsn := "root:one_more_advice_prog@tcp(127.0.0.1:4307)/one_more_advice_prog?collation=utf8mb4_unicode_ci&parseTime=true"
-	dsn := mysqlUser + ":" + mysqlPassword + "@tcp(" + mysqlHost + mysqlPort + ")/" + mysqlDatabase + "?collation=utf8mb4_unicode_ci&parseTime=true"
+	// dsn := "root:one_more_advice@tcp(127.0.0.1:4307)/one_more_advice_prog?collation=utf8mb4_unicode_ci&parseTime=true"
+	dsn := mysqlUser + ":" + mysqlPassword + "@tcp(" + mysqlHost + ":" + mysqlPort + ")/" + mysqlDatabase + "?collation=utf8mb4_unicode_ci&parseTime=true"
 	
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
+		fmt.Println("DBへの接続に失敗しました")
+		fmt.Println(err)
 		panic(err.Error)
 	}
 	sqlHandler := new(SqlHandler)
