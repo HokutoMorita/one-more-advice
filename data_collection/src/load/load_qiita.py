@@ -28,7 +28,7 @@ def load_qiita_item():
         logger.error(traceback.format_exc())
     logger.info('mysql connect done')
     qiita_item_df = pd.read_csv('../data/transformed/transformed_qiita_item.csv')
-    table_name = 'qiita_item'
+    table_name = 'qiita_items'
     table_columns = [
         'item_id', 'text', 'coediting', 'comments_count', 
         'likes_count', 'private', 'reactions_count', 

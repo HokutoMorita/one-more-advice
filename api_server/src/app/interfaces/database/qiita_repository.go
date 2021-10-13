@@ -9,7 +9,7 @@ type QiitaRepository struct {
 }
 
 func (db *QiitaRepository) SelectQiitaItems() []domain.QiitaItem {
-	qiitaItems := []domain.QiitaItem{}
-	db.FindAll(&qiitaItems)
-	return qiitaItems
+	qiitaItem := []domain.QiitaItem{}
+	db.FindAll(&qiitaItem)
+	return qiitaItem
 }
