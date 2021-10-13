@@ -8,8 +8,8 @@ type QiitaRepository struct {
 	SqlHandler
 }
 
-func (db *QiitaRepository) Select() []domain.QiitaItem {
-	qiitaItems := []domain.QiitaItem{}
-	db.FindAll(&qiitaItems)
-	return qiitaItems
+func (db *QiitaRepository) SelectQiitaItems() []domain.QiitaItem {
+	qiitaItem := []domain.QiitaItem{}
+	db.FindAll(&qiitaItem)
+	return qiitaItem
 }

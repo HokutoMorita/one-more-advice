@@ -56,11 +56,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `one_more_advice`.`qiita_item`
+-- Table `one_more_advice`.`qiita_items`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `one_more_advice`.`qiita_item` ;
+DROP TABLE IF EXISTS `one_more_advice`.`qiita_items` ;
 
-CREATE TABLE IF NOT EXISTS `one_more_advice`.`qiita_item` (
+CREATE TABLE IF NOT EXISTS `one_more_advice`.`qiita_items` (
   `item_id` VARCHAR(255) NOT NULL,
   `text` LONGTEXT NULL,
   `coediting` TINYINT(4) NULL,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `one_more_advice`.`qiita_item_to_tag_relation` (
   INDEX `tag_name_idx` (`tag_name` ASC),
   CONSTRAINT `item_id`
     FOREIGN KEY (`item_id`)
-    REFERENCES `one_more_advice`.`qiita_item` (`item_id`)
+    REFERENCES `one_more_advice`.`qiita_items` (`item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `tag_name`
